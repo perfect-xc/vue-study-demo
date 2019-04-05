@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="./lib/vue-2.4.0.js"></script>
+  <style>
+    [v-cloak]{
+      display: none
+    }
+  
+  </style>
+</head>
+<body>
+  <div id="app">
+    <com1 v-on:func="show"></com1>
+    <h3 v-cloak>来自子组件的数据--- {{datamsgfromchild}}</h3>
+    <div>
+      来自子组件的数据对象
+      <li v-for="(item,k) in datamsgfromchild1" :key="item">
+       {{k}}----{{item}}
+      </li>
+
+    </div>
+
+  
+  </div>
+  <template id="tmp">
+    <div>
+      <h3>我是子组件</h3>
+      <input type="button" value="这是子组件的按钮，点击它，获取到父组件的方法" @click="myclick">
+    </div>
+  </template>
+  <script>
+    var com1={
+        template:"#tmp",
+        data(){
+          return {
+            childrendata:"我是子组件的数据",
+            sonmsg:{
+              name:'zhangsan',age:18
+            }
+          }
+        },
+        methods: {
+          myclick(){
+            this.$emit('func',this.childrendata,this.sonmsg);
+          }
+        },
+
+    };
+    var vm=new Vue({
+      el:"#app",
+      data:{
+        datamsgfromchild:null,
+        datamsgfromchild1:null
+
+      },
+      methods: {
+        show(data,data1){
+          console.log("我是父组件的方法");
+          this.datamsgfromchild=data;
+          this.datamsgfromchild1=data1;
+          // console.log(this.datamsgfromchild);
+          // console.log(this.datamsgfromchild1);
+
+        }
+      },
+      components:{
+        com1
+      }
+    });
+  </script>
+</body>
+</html>

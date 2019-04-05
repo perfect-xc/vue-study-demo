@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="./lib/vue-2.4.0.js"></script>
+</head>
+<body>
+    <div id="app">
+        <h2>WangCai is todo list</h2>
+        <input @keyup.enter="addTodo" type="text" placeholder="你需要完成的任务是？" v-model.trim="todo">
+        <br><br>
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>任务名称</th>
+                    <th>完成情况</th>
+                    <th>状态</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="(todo,index) in todos">
+                    <td>{{index+1}}</td>
+                    <td>{{todo.name}}</td>
+                    <td>{{todo.done?"已完成":'未完成'}}</td>
+                    <td><input type="checkbox" v-model="todo.done"></td>
+                    <td><a href="" @click.prevent="removeTodo(index)">删除</a></td>
+                   
+                </tr>
+            </tbody>
+        </table>
+        <input type="checkbox" >显示所有
+    </div>
+    <script>
+        var app = new Vue({
+            el:"#app",
+            data:{
+            
+                todo:"",
+                // 定义一些数据
+                todos:[
+                    {name:"吃饭",done:true},
+                    {name:"睡觉",done:false},
+                    {name:"玩游戏",done:true}
+                ]
+            },
+            // 方法
+            methods:{
+                // 添加任务
+                addTodo:function () {
+                    if (this.todo == ""){
+                        alert("任务不能为空");
+                    }else{
+                        this.todos.push({
+                            name:this.todo,
+                            done:false
+                        })
+                        // 将文本框清空
+                        this.todo = "";
+                    }
+                },
+                // 删除任务
+                removeTodo:function (index) {
+                    this.todos.splice(index,1);
+                }
+            }
+        })
+    </script>
+</body>
+</html>

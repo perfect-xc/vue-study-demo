@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+    [v-cloak] {
+        display: none;
+    }
+    
+    #app {
+        width: 100px;
+        height: 100px;
+    }
+    
+    .mask {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        background: rgba(0, 0, 0, 0.3);
+    }
+    
+    .content {
+        width: 200px;
+        height: 200px;
+        background-color: hotpink;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-top: -100px;
+        margin-left: -100px;
+        border-radius: 10px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+    
+    h4 {
+        text-align: center;
+    }
+    
+    span {
+        display: inline-block;
+        width: 30px;
+        height: 30px;
+        background-color: #555;
+        line-height: 30px;
+        text-align: center;
+        vertical-align: middle;
+        border: 1px solid #fff;
+    }
+    
+    div.size {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        /*justify-content: space-between;*/
+    }
+    
+    .btnMsg {
+        display: flex;
+    }
+    
+    .confirm,
+    .cancle {
+        flex: 1;
+        margin: 0;
+        padding: 0;
+        width: 80px;
+        height: 40px;
+        font-size: 16px;
+        font-weight: bold;
+        background-color: skyblue;
+        border: 1px solid skyblue;
+        /*border-radius: 5px;*/
+        border-top: 1px solid #ccc;
+    }
+    
+    .confirm {
+        border-bottom-left-radius: 5px;
+    }
+    
+    .cancle {
+        border-bottom-right-radius: 5px;
+    }
+    
+    input {
+        width: 80px;
+        height: 20px;
+    }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <button @click="btn">编辑</button>
+        <div class="mask" v-show="flag"></div>
+        <div class="content" v-show='flag'>
+            <h4>编辑商品</h4>
+            <div class='size'>
+                <div>尺码：
+                    <span v-for='item in msg1'>{{item}}</span>
+                </div>
+                <div>数量：
+                    <input type="number" value="1">
+                </div>
+            </div>
+            <div class='btnMsg'>
+                <button class='confirm' @click="btn1">确认</button>
+                <button class='cancle' @click="btn2">取消</button>
+            </div>
+        </div>
+    </div>
+    <script src="./lib/vue-2.4.0.js"></script>
+    <script src="./lib/mui.js"></script>
+    <script>
+    let vm = new Vue({
+        el: "#app",
+        data: {
+            msg1: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+            flag: false,
+        },
+        methods: {
+
+            btn() {
+                    this.flag = !this.flag;
+
+                },
+                btn1() {
+                    this.flag = !this.flag;
+                    setTimeout(function() {
+                            alert("编辑成功")
+                        }, 1000)
+                        // setInterval(func, delay)
+
+                },
+                btn2() {
+                    this.flag = !this.flag;
+
+                }
+
+
+
+
+
+        },
+    });
+    </script>
+</body>
+
+</html>

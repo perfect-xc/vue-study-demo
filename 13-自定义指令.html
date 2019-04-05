@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        *{
+            margin:0;
+            padding:0;
+        }
+        #container{
+            width:100%;
+            font-size:14px;
+        }
+        #container .header{
+            width: 100%;
+            padding:10px 15px;
+            background-color:#337ab7;
+            color:#fff;
+            border: 1px solid #337ab7;
+            border-color:#337ab7;
+            border-bottom:1px solid transparent;
+            border-top-left-radius:3px;
+            border-top-right-radius:3px;
+        
+        }
+        #container .section{
+            width: 100%;
+            padding:15px;
+            font-weight: bolder;
+        }
+        input{
+            display: inline-block;
+            width:auto;
+            height:20px;
+            padding:6px 12px;
+            border:1px solid #ccc;
+            border-radius: 4px;
+            font-size:14px;
+            color:#555;
+            vertical-align: middle
+        }
+        button{
+            display: inline-block;
+            height:34px;
+            padding:6px 12px;
+            background-color: #337ab7;
+            color:#fff;
+            font-weight:400;
+            text-align: center;
+            vertical-align: middle;
+            border:1px solid transparent;
+            border-radius: 4px;
+            /* touch-action: manipulation; */
+        }
+        table{
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom:20px;
+        }
+        th,td{
+            border:1px solid #ccc;
+            padding:6px 12px;
+            vertical-align: middle;
+            text-align: center;
+        }
+        th{
+            border-bottom-width: 2px
+        }
+        tbody tr:hover{
+            background-color:#ccc;
+        }
+    </style>
+
+    <script src="lib/vue-2.4.0.js"></script>
+</head>
+<body>
+    <div id="app">
+        <div id="container">
+            <div class="header">
+                <h3>品牌列表</h3>
+            </div>
+            <div class="section">
+                <label for="id">Id:</label>
+                <input type="text" v-model="id">
+                <label for="name">Name:</label>
+                <input type="text" v-model="name" @keyup.f2="add">
+                <button @click="add">添加</button>
+                <label for="name">搜索名称关键字:</label>
+                <input type="text" v-model="keywords"  v-focus v-color="'red'">
+            </div>
+            </div>
+        <table border="1">
+            <thead>
+                <tr>
+                        <th>Id</th>
+                        <th>Name</th>
+                        <th>Ctime</th>
+                        <th>Opreation</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="item in seach(keywords)" :key="item.id">
+                        <td>{{item.id}}</td>
+                        <td>{{item.name}}</td>
+                        <td>{{item.ctime | dateFormat()}}</td>
+                        <td><a href="" @click.prevent="del(item.id)">删除</a></td>
+                </tr>
+            </tbody>
+            
+        </table>
+    </div>
+    
+    <script>
+        //自定义按键修饰符
+        Vue.config.keyCodes.f2=113;
+        //自定义全局指令
+
+        Vue.directive('focus', {
+            bind:function(){},
+            inserted:function(el){
+                el.focus();
+            },
+            updated:function(){}
+        });
+        Vue.directive('color',{
+            bind:function(el,binding){
+                el.style.color=binding.value
+                console.log(binding.value);//blue
+                console.log(binding.expression);//'blue'
+
+            }
+        });
+
+         // 全局的过滤器， 进行时间的格式化
+    // 所谓的全局过滤器，就是所有的VM实例都共享的
+        Vue.filter('dateFormat',function(dateStr,pattern= ""){
+            var dt=new Date(dateStr);
+            var yy=dt.getFullYear();
+            var mm=dt.getMonth()+1;
+            var dd=dt.getDate();
+            var h=dt.getHours();
+            var m=dt.getMinutes();
+            var s=dt.getSeconds();
+            mm=mm<10?'0'+mm:mm;
+            dd=dd<10?'0'+dd:dd;
+            h=h<10?'0'+h:h;
+            m=m<10?'0'+m:m;
+            s=h<10?'0'+s:s;
+
+            if(pattern.toLowerCase()=='yyyy-mm-dd'){
+                return `${yy}-${mm}-${dd}`;
+            }else{
+                return `${yy}-${mm}-${dd} ${h}:${m}:${s}`
+            }
+            
+        });
+
+        var vm=new Vue({
+            el:"#app",
+            data:{
+                id:'',
+                name:'',
+                keywords:'',
+                list:[
+                    {id:1,name:'奔驰',ctime:"2019-02-24T05:54:21.324Z"},
+                    {id:2,name:'宝马',ctime:"2019-02-24T05:54:21.324Z"},
+                    {id:3,name:'奥迪',ctime:"2019-02-24T05:54:21.324Z"},
+                ]
+            },
+            methods:{
+                add(){
+                    if(this.id=='' || this.name==""){
+                        return;
+                    }else{
+                        this.list.push({id:this.id,name:this.name,ctime:new Date()});
+                        this.id=this.name='';
+                    }
+                    
+                },
+                del(id){
+                    // 方法1：
+                    // this.list.some((item,index)=>{
+                    //     if(id==item.id){
+                    //         this.list.splice(index,1);
+                    //         return true;
+                    //     }
+                    // })
+                    //方法二：
+                    var index=this.list.findIndex((item)=>{
+                        // return item.id==id;
+                        if(item.id==id){
+                            return true;
+                        }
+                    });
+                    this.list.splice(index,1);
+                },
+                seach(keywords){
+                    // //方法1：
+                    // var newList=[];
+                    // this.list.forEach(item=>{
+                    //     if(item.name.indexOf(keywords)!=-1){
+                    //         newList.push(item);
+                    //     }
+                    // });
+                    // return newList;
+                
+                    //方法2：
+                    return this.list.filter(item=>{
+                        if(item.name.includes(keywords)){
+                            return item
+                        }
+                    });
+                }
+            }
+        });
+    
+    </script>
+</body>
+</html>

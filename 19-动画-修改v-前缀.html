@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    .my-class-enter,
+    .my-class-leave-to{
+      opacity: 0;
+      transform: translateX(100px);
+    }
+
+    .my-class-enter-active,
+    .my-class-leave-active{
+      
+      transition: all 2s ease
+    }
+  
+    
+  </style>
+</head>
+<body>
+  <div id="app">
+    <input type="button" value="toggle" @click="flag=!flag">
+    <transition name="my-class">
+        <h3 v-if="flag">这是一个div</h3>
+    </transition>
+   
+  </div>
+  <script src="lib/vue-2.4.0.js"></script>
+  <script>
+    var vm=new Vue({
+      el:"#app",
+      data:{
+        flag:false
+      },
+      methods: {
+        
+      },
+    });
+  
+  </script>
+</body>
+</html>

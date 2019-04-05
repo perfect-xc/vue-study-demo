@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app">
+        <button v-on:click="lang">浪起来</button>
+        <button @click="stop">别浪</button>
+        <p>{{msg}}</p>
+    </div>
+    <script src="./lib/vue-2.4.0.js"></script>
+    <script>
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                msg: '猥琐发育，别浪~~~~~',
+                intervalId: null
+            },
+            methods: {
+                // // 方法1：
+                // lang(){
+                //     // console.log(this.msg);
+                //     //刚开始就清一下定时器，是为了点击一下只触发一次定时器
+                //     clearInterval(this.intervalId);
+                //    this.intervalId=setInterval(()=>{
+                //         var start=this.msg.substring(0,1);
+                //         var end=this.msg.substring(1);
+                //         this.msg=end+start;
+                //     },500);
+
+                // },
+                // stop(){
+                //     clearInterval(this.intervalId);
+                // }
+                // 方法二：
+                lang() {
+                    // console.log(this.msg);
+                    //只触发一次定时器
+                    if (this.intervalId != null) return;
+                    this.intervalId = setInterval(() => {
+                        var start = this.msg.substring(0, 1);
+                        var end = this.msg.substring(1);
+                        this.msg = end + start;
+                    }, 500);
+
+                },
+                stop() {
+                    clearInterval(this.intervalId);
+                    //是为了停止后在点击浪起来能动起来
+                    this.intervalId = null;
+                }
+            },
+        });
+    </script>
+</body>
+
+</html>

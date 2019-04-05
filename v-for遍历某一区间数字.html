@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+    [v-cloak] {
+        display: none;
+    }
+    
+    #app div {
+        width: 500px;
+        height: 500px;
+        background-color: red;
+    }
+    
+    span {
+        display: inline-block;
+        width: 30px;
+        height: 30px;
+        background-color: #555;
+        margin-left: 10px;
+        line-height: 30px;
+        text-align: center;
+        vertical-align: middle;
+    }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <!-- <div v-on:click='format' v-html='list'></div> -->
+        <span v-for='item in msg'>{{item}}</span>
+    </div>
+    <script src="./lib/vue-2.4.0.js"></script>
+    <script>
+    let vm = new Vue({
+        el: "#app",
+        data: {
+            size: [35, 45],
+            list: '',
+            msg: []
+        },
+        methods: {
+            mounted() {
+                    this.format();
+                },
+                format() {
+                    // var o = '';
+                    var arr = this.size
+                    for (var i = arr[0]; i <= arr[1]; i++) {
+                        // o += `<span>${i}</span>`;
+                        this.msg.push(i);
+                    }
+                    // this.list = o;
+                }
+        },
+    });
+    </script>
+</body>
+
+</html>

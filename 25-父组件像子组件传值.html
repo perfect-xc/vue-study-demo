@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:v-on="http://www.w3.org/1999/xhtml">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="./lib/vue-2.4.0.js"></script>
+</head>
+
+<body>
+  <div id="app">
+   
+    <com1 :parentdata="msg"></com1>
+  </div>
+
+
+  <template id="a1">
+    <div>
+      <h3 @click="change">{{parentdata}}</h3>
+    </div>
+  </template>
+
+  <script>
+  
+    // 创建 Vue 实例，得到 ViewModel
+    var vm = new Vue({
+      el: '#app',
+      data: {
+        flag: false,
+        msg:'父组件数据',
+      },
+      methods: {},
+      components: {
+        'com1': {
+          template: '#a1',
+          data(){
+            return {
+              tittle:123,
+              content:'子组件的data'
+            }
+          },
+          props:["parentdata"],
+          methods: {
+            change(){
+              this.parentdata="被修改了"
+            }
+          },
+          },
+          
+      },  
+    });
+  </script>
+</body>
+
+</html>
